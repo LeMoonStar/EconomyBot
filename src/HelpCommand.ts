@@ -68,8 +68,9 @@ export default class HelpCommand extends Command {
         this._precomputedEmbed.addField(
           name.join(' | '),
           'usage: ' +
+            name +
             (() => {
-              let tmp: string = '';
+              let tmp: string = ' ';
               command.getArgumentPattern().forEach((arg) => {
                 tmp += arg.name + (arg.optional ? '*' : '') + ' ';
               });
@@ -89,7 +90,19 @@ export default class HelpCommand extends Command {
       let embed: MessageEmbed = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle('Help - ' + names[0])
-        .setDescription(command.getDescription());
+        .setDescription(
+          'usage: ' +
+            names[0] +
+            (() => {
+              let tmp: string = ' ';
+              command.getArgumentPattern().forEach((arg) => {
+                tmp += arg.name + (arg.optional ? '*' : '') + ' ';
+              });
+              return tmp;
+            })() +
+            '\n' +
+            command.getDescription()
+        );
 
       command.getArgumentPattern().forEach((arg) => {
         embed.addField(
