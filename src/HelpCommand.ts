@@ -37,6 +37,8 @@ export default class HelpCommand extends Command {
   }
 
   regenerateEmbed(): void {
+    console.warn('regenerating help embeds');
+
     const commands: Map<string, Command> = this._handler.getCommands();
     let command_names: Map<Command, string[]> = new Map<Command, string[]>();
 
@@ -54,7 +56,6 @@ export default class HelpCommand extends Command {
       .setTitle('Help')
       .setDescription('all commands of the EconomyBot');
 
-
     command_names.forEach((name, command) => {
       if (command.getArgumentPattern().length != 0)
         this._precomputedEmbed.addField(
@@ -63,27 +64,35 @@ export default class HelpCommand extends Command {
             (() => {
               let tmp: string = '';
               command.getArgumentPattern().forEach((arg) => {
-                tmp += arg.name + ' ';
+                tmp += arg.name + (arg.optional ? '*' : '') + ' ';
               });
+              return tmp;
             })() +
             '\n' +
             command.getDescription()
         );
-      else this._precomputedEmbed.addField(name.join(' | '), command.getDescription());
+      else
+        this._precomputedEmbed.addField(
+          name.join(' | '),
+          command.getDescription()
+        );
     });
 
     command_names.forEach((names, command) => {
       let embed: MessageEmbed = new MessageEmbed()
         .setTitle('Help - ' + names[0])
         .setDescription(command.getDescription());
-      
-      command.getArgumentPattern().forEach((arg)=>{
-        embed.addField(arg.name, 'optional: ' + arg.optional + (arg.type)?'\ntype ' + arg.type : '');
+
+      command.getArgumentPattern().forEach((arg) => {
+        embed.addField(
+          arg.name + (arg.optional ? ' (optional)' : ''),
+          arg.type ? '\ntype ' + arg.type : ''
+        );
       });
 
-      names.forEach((name)=>{
+      names.forEach((name) => {
         this._precomputedCommandEmbeds.set(name, embed);
-      })
+      });
     });
   }
 }
