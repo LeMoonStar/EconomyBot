@@ -17,9 +17,16 @@ export default class HelpCommand extends Command {
   getArgumentPattern(): {
     optional: boolean;
     name: string;
+    description: string;
     type?: string;
   }[] {
-    return [];
+    return [
+      {
+        name: 'command',
+        description: 'a command to get more information about',
+        optional: true,
+      },
+    ];
   }
 
   execute(message: Message, args: string[]): void {
@@ -80,13 +87,14 @@ export default class HelpCommand extends Command {
 
     command_names.forEach((names, command) => {
       let embed: MessageEmbed = new MessageEmbed()
+        .setColor('#0099ff')
         .setTitle('Help - ' + names[0])
         .setDescription(command.getDescription());
 
       command.getArgumentPattern().forEach((arg) => {
         embed.addField(
           arg.name + (arg.optional ? ' (optional)' : ''),
-          arg.type ? '\ntype ' + arg.type : ''
+          arg.description + (arg.type ? '\ntype ' + arg.type : '')
         );
       });
 

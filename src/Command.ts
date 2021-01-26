@@ -4,6 +4,7 @@ export default abstract class Command {
   abstract getArgumentPattern(): {
     optional: boolean;
     name: string;
+    description: string;
     type?: string;
   }[];
 
