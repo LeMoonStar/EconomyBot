@@ -1,6 +1,6 @@
 import { Message, MessageEmbed } from 'discord.js';
-import Command from './Command';
-import CommandHandler from './CommandHandler';
+import Command from '../Command';
+import CommandHandler from '../CommandHandler';
 
 export default class HelpCommand extends Command {
   private _handler: CommandHandler;
