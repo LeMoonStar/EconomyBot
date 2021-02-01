@@ -1,5 +1,4 @@
 import DiscordBot from './DiscordBot';
-import Command from './Command';
 import HelpCommand from './commands/HelpCommand';
 
 new DiscordBot();
