@@ -20,7 +20,7 @@ export default class CommandHandler {
         ignoreEveryone: true,
         ignoreRoles: true,
       }) ||*/
-      message.content.startsWith(this._prefix)
+      message.content.toLowerCase().startsWith(this._prefix.toLowerCase())
     ) {
       this.onCommand(message);
     }
@@ -34,12 +34,12 @@ export default class CommandHandler {
           '", which is already registered. (OVERWRITING COMMAND)'
       );
     }
-    this._commands.set(name, command);
+    this._commands.set(name.toLowerCase(), command);
   }
 
   private onCommand(message: Message): void {
     const splitted = message.content.split(' ');
-    const command = splitted[0].substr(this._prefix.length);
+    const command = splitted[0].substr(this._prefix.length).toLowerCase();
     if (this._commands.has(command)) {
       this._commands.get(command).execute(message, splitted.slice(1));
     } else {
