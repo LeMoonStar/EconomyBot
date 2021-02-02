@@ -6,9 +6,11 @@
   "author": "LeMoonStar",
   "license": "MIT",
   "dependencies": {
+    "better-sqlite3": "^7.1.2",
     "discord.js": "^12.3.1"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^5.4.1",
     "@types/node": "^14.11.10",
     "dotenv": "^8.2.0"
   },
