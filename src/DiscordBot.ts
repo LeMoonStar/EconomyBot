@@ -10,7 +10,7 @@ export default class DiscordBot {
     DiscordBot._client = new Discord.Client();
     DiscordBot._commandHandler = new CommandHandler('ec!');
     DiscordBot._client.login(process.env.TOKEN).catch(console.error);
-    DiscordBot._database = new DatabaseHelper(process.env.DBFILE)
+    DiscordBot._database = new DatabaseHelper(process.env.DBFILE);
     DiscordBot._client.on('ready', this.onReady.bind(this));
   }
 
