@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import DiscordBot from './DiscordBot';
 import Command from './Command';
 import { exit } from 'process';
@@ -41,7 +41,20 @@ export default class CommandHandler {
     const splitted = message.content.split(' ');
     const command = splitted[0].substr(this._prefix.length).toLowerCase();
     if (this._commands.has(command)) {
-      this._commands.get(command).execute(message, splitted.slice(1));
+      try {
+        this._commands.get(command).execute(message, splitted.slice(1));
+      } catch (e) {
+        console.error(e);
+        message.channel.send(
+          new MessageEmbed()
+            .setTitle(':x: ERROR')
+            .setDescription(
+              'seems like there was an error, please report this at our [discord server](https://discord.gg/amDBUEnjFj)'
+            )
+            .setColor('#FF0000')
+            .addField('description', (e as Error).message)
+        );
+      }
     } else {
       message.channel.send(':x: This command does not exist.');
     }
