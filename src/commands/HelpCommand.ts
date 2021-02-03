@@ -35,7 +35,15 @@ export default class HelpCommand extends Command {
       return;
     }
     args.forEach((command) => {
-      message.channel.send(this._precomputedCommandEmbeds.get(command));
+      if (this._precomputedCommandEmbeds.has(command))
+        message.channel.send(this._precomputedCommandEmbeds.get(command));
+      else
+        message.channel.send(
+          new MessageEmbed()
+            .setTitle('Help - unknown command')
+            .setDescription('the command "' + command + '" does not exist.')
+            .setColor('#FF0000')
+        );
     });
   }
 
