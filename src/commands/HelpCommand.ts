@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { Channel, Message, MessageEmbed } from 'discord.js';
 import Command from '../Command';
 import CommandHandler from '../CommandHandler';
 
@@ -34,16 +34,22 @@ export default class HelpCommand extends Command {
       message.channel.send(this._precomputedEmbed);
       return;
     }
+    let embeds: MessageEmbed[] = [];
     args.forEach((command) => {
-      if (this._precomputedCommandEmbeds.has(command))
-        message.channel.send(this._precomputedCommandEmbeds.get(command));
-      else
-        message.channel.send(
+      if (this._precomputedCommandEmbeds.has(command)) {
+        if (!embeds.includes(this._precomputedCommandEmbeds.get(command)))
+          embeds.push(this._precomputedCommandEmbeds.get(command));
+      } else
+        embeds.push(
           new MessageEmbed()
             .setTitle('Help - unknown command')
             .setDescription('the command "' + command + '" does not exist.')
             .setColor('#FF0000')
         );
+    });
+
+    embeds.forEach((embed: MessageEmbed) => {
+      message.channel.send(embed);
     });
   }
 
